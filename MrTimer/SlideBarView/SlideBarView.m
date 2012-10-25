@@ -11,6 +11,9 @@
 #import "MPLayerSupport.h"
 #import <QuartzCore/QuartzCore.h>
 
+#define kUnderLayerWidth 50
+#define kMovingAnimationKey @"kMovingAnimationKey" 
+
 @interface SlideBarView ()
 
 - (void)drawTopLayerInContext:(CGContextRef)context;
@@ -44,7 +47,7 @@
     if (!mUnderLayer)
     {
         mUnderLayer = [CALayer layer];
-        mUnderLayer.frame = self.bounds;
+        mUnderLayer.frame = CGRectMake(0, 0, kUnderLayerWidth, self.bounds.size.height);
         mUnderLayer.delegate = mLayerSupport;
         [self.layer addSublayer:mUnderLayer];
     } //< Should add Under Layer First
@@ -85,12 +88,12 @@
     UIGraphicsPushContext(context);
 
     CGRect rect = [mUnderLayer bounds];
-
+    
     [MPColorUtil renderCenterCircleGradient:context
-                                       rect:CGRectInset(rect, 20, 20)
+                                       rect:rect
                              outerColorCode:0xFF000000
                              innerColorCode:0xFFFFFFFF];
-    
+
     UIGraphicsPopContext();
 }
 
@@ -113,7 +116,7 @@
     float cornerRadius = 5;
     float textSize = 20.0;
     UIFont *textFont = [UIFont systemFontOfSize:textSize];
-    UIColor *textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.0f];
+    UIColor *textColor = [[UIColor lightGrayColor] colorWithAlphaComponent:0.2f];
     UIColor *textShadowColor = [UIColor blackColor];
 
     UIColor *topBorderColor1 = [MPColorUtil colorFromHex:0xFF000000];
@@ -185,6 +188,18 @@
                             withFont:textFont
                        lineBreakMode:NSLineBreakByTruncatingTail
                            alignment:NSTextAlignmentCenter];
+        
+        if (![mUnderLayer animationForKey:kMovingAnimationKey])
+        {
+            CABasicAnimation *anim = [CABasicAnimation animationWithKeyPath:@"position"];
+            anim.fillMode = kCAFillModeForwards;
+            anim.removedOnCompletion = NO;
+            [anim setSpeed:0.1];
+            [anim setFromValue:[NSValue valueWithCGPoint:CGPointMake(CGRectGetMinX(grooveRect_inner), CGRectGetMidY(grooveRect_inner))]];
+            [anim setToValue:[NSValue valueWithCGPoint:CGPointMake(CGRectGetMaxX(grooveRect_inner), CGRectGetMidY(grooveRect_inner))]];
+            [anim setRepeatCount:HUGE_VALF];
+            [mUnderLayer addAnimation:anim forKey:kMovingAnimationKey];
+        }        
     }
     
     UIGraphicsPopContext();
