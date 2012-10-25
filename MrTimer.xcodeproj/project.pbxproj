@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		47008589163831910042F814 /* MPColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47008588163831910042F814 /* MPColorUtil.m */; };
+		4700858F16385D2B0042F814 /* MPCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4700858E16385D2B0042F814 /* MPCustomView.m */; };
+		47BC690C1638F20800EC8091 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BC690B1638F20800EC8091 /* QuartzCore.framework */; };
+		47BC69101638F7E300EC8091 /* MPLayerSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BC690F1638F7E300EC8091 /* MPLayerSupport.m */; };
 		47C5D97B163791E400F419F7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C5D97A163791E400F419F7 /* UIKit.framework */; };
 		47C5D97D163791E400F419F7 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C5D97C163791E400F419F7 /* Foundation.framework */; };
 		47C5D97F163791E400F419F7 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C5D97E163791E400F419F7 /* CoreGraphics.framework */; };
@@ -16,9 +20,20 @@
 		47C5D98D163791E400F419F7 /* Default.png in Resources */ = {isa = PBXBuildFile; fileRef = 47C5D98C163791E400F419F7 /* Default.png */; };
 		47C5D98F163791E400F419F7 /* Default@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 47C5D98E163791E400F419F7 /* Default@2x.png */; };
 		47C5D991163791E400F419F7 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 47C5D990163791E400F419F7 /* Default-568h@2x.png */; };
+		47C5D9A11637921800F419F7 /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C5D99F1637921800F419F7 /* MainViewController.m */; };
+		47C5D9A21637921800F419F7 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47C5D9A01637921800F419F7 /* MainViewController.xib */; };
+		47C5D9AB1637A47C00F419F7 /* ClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C5D9AA1637A47C00F419F7 /* ClockView.m */; };
+		47C5D9AE1637AAF200F419F7 /* SlideBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C5D9AD1637AAF200F419F7 /* SlideBarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		47008587163831910042F814 /* MPColorUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPColorUtil.h; path = ../../MPiOS/MPColorUtil.h; sourceTree = "<group>"; };
+		47008588163831910042F814 /* MPColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPColorUtil.m; path = ../../MPiOS/MPColorUtil.m; sourceTree = "<group>"; };
+		4700858D16385D2B0042F814 /* MPCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCustomView.h; path = ../../MPiOS/MPCustomView.h; sourceTree = "<group>"; };
+		4700858E16385D2B0042F814 /* MPCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCustomView.m; path = ../../MPiOS/MPCustomView.m; sourceTree = "<group>"; };
+		47BC690B1638F20800EC8091 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		47BC690E1638F7E300EC8091 /* MPLayerSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPLayerSupport.h; path = ../../MPiOS/MPLayerSupport.h; sourceTree = "<group>"; };
+		47BC690F1638F7E300EC8091 /* MPLayerSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPLayerSupport.m; path = ../../MPiOS/MPLayerSupport.m; sourceTree = "<group>"; };
 		47C5D976163791E400F419F7 /* MrTimer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MrTimer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C5D97A163791E400F419F7 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		47C5D97C163791E400F419F7 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -32,6 +47,13 @@
 		47C5D98C163791E400F419F7 /* Default.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Default.png; sourceTree = "<group>"; };
 		47C5D98E163791E400F419F7 /* Default@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default@2x.png"; sourceTree = "<group>"; };
 		47C5D990163791E400F419F7 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
+		47C5D99E1637921800F419F7 /* MainViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		47C5D99F1637921800F419F7 /* MainViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		47C5D9A01637921800F419F7 /* MainViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MainViewController.xib; sourceTree = "<group>"; };
+		47C5D9A91637A47C00F419F7 /* ClockView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ClockView.h; path = ClockView/ClockView.h; sourceTree = "<group>"; };
+		47C5D9AA1637A47C00F419F7 /* ClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClockView.m; path = ClockView/ClockView.m; sourceTree = "<group>"; };
+		47C5D9AC1637AAF200F419F7 /* SlideBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideBarView.h; path = SlideBarView/SlideBarView.h; sourceTree = "<group>"; };
+		47C5D9AD1637AAF200F419F7 /* SlideBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideBarView.m; path = SlideBarView/SlideBarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +61,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47BC690C1638F20800EC8091 /* QuartzCore.framework in Frameworks */,
 				47C5D97B163791E400F419F7 /* UIKit.framework in Frameworks */,
 				47C5D97D163791E400F419F7 /* Foundation.framework in Frameworks */,
 				47C5D97F163791E400F419F7 /* CoreGraphics.framework in Frameworks */,
@@ -48,6 +71,28 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		4700858B163832590042F814 /* MPiOS */ = {
+			isa = PBXGroup;
+			children = (
+				47008587163831910042F814 /* MPColorUtil.h */,
+				47008588163831910042F814 /* MPColorUtil.m */,
+				4700858D16385D2B0042F814 /* MPCustomView.h */,
+				4700858E16385D2B0042F814 /* MPCustomView.m */,
+				47BC690E1638F7E300EC8091 /* MPLayerSupport.h */,
+				47BC690F1638F7E300EC8091 /* MPLayerSupport.m */,
+			);
+			name = MPiOS;
+			sourceTree = "<group>";
+		};
+		4700858C1638327D0042F814 /* SlideBarView */ = {
+			isa = PBXGroup;
+			children = (
+				47C5D9AC1637AAF200F419F7 /* SlideBarView.h */,
+				47C5D9AD1637AAF200F419F7 /* SlideBarView.m */,
+			);
+			name = SlideBarView;
+			sourceTree = "<group>";
+		};
 		47C5D96B163791E400F419F7 = {
 			isa = PBXGroup;
 			children = (
@@ -68,6 +113,7 @@
 		47C5D979163791E400F419F7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				47BC690B1638F20800EC8091 /* QuartzCore.framework */,
 				47C5D97A163791E400F419F7 /* UIKit.framework */,
 				47C5D97C163791E400F419F7 /* Foundation.framework */,
 				47C5D97E163791E400F419F7 /* CoreGraphics.framework */,
@@ -78,9 +124,15 @@
 		47C5D980163791E400F419F7 /* MrTimer */ = {
 			isa = PBXGroup;
 			children = (
+				4700858B163832590042F814 /* MPiOS */,
+				4700858C1638327D0042F814 /* SlideBarView */,
+				47C5D9A81637A45D00F419F7 /* ClockView */,
 				47C5D989163791E400F419F7 /* AppDelegate.h */,
 				47C5D98A163791E400F419F7 /* AppDelegate.m */,
 				47C5D981163791E400F419F7 /* Supporting Files */,
+				47C5D99E1637921800F419F7 /* MainViewController.h */,
+				47C5D99F1637921800F419F7 /* MainViewController.m */,
+				47C5D9A01637921800F419F7 /* MainViewController.xib */,
 			);
 			path = MrTimer;
 			sourceTree = "<group>";
@@ -97,6 +149,15 @@
 				47C5D990163791E400F419F7 /* Default-568h@2x.png */,
 			);
 			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		47C5D9A81637A45D00F419F7 /* ClockView */ = {
+			isa = PBXGroup;
+			children = (
+				47C5D9A91637A47C00F419F7 /* ClockView.h */,
+				47C5D9AA1637A47C00F419F7 /* ClockView.m */,
+			);
+			name = ClockView;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -154,6 +215,7 @@
 				47C5D98D163791E400F419F7 /* Default.png in Resources */,
 				47C5D98F163791E400F419F7 /* Default@2x.png in Resources */,
 				47C5D991163791E400F419F7 /* Default-568h@2x.png in Resources */,
+				47C5D9A21637921800F419F7 /* MainViewController.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -166,6 +228,12 @@
 			files = (
 				47C5D987163791E400F419F7 /* main.m in Sources */,
 				47C5D98B163791E400F419F7 /* AppDelegate.m in Sources */,
+				47C5D9A11637921800F419F7 /* MainViewController.m in Sources */,
+				47C5D9AB1637A47C00F419F7 /* ClockView.m in Sources */,
+				47C5D9AE1637AAF200F419F7 /* SlideBarView.m in Sources */,
+				47008589163831910042F814 /* MPColorUtil.m in Sources */,
+				4700858F16385D2B0042F814 /* MPCustomView.m in Sources */,
+				47BC69101638F7E300EC8091 /* MPLayerSupport.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -274,6 +342,7 @@
 				47C5D996163791E400F419F7 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
