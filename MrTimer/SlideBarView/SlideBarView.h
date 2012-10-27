@@ -8,15 +8,35 @@
 
 #import <UIKit/UIKit.h>
 
-@class MPLayerSupport;
+@class SlideBarView;
+@class MPGlowLabel;
+
+@protocol SlideBarViewDelegate <NSObject>
+
+- (void)slidingFinished:(SlideBarView*)slideBarView;
+- (void)handleTouched:(SlideBarView*)slideBarView touch:(UITouch*)touch;
+- (void)handleMoved:(SlideBarView*)slideBarView touch:(UITouch*)touch;
+- (void)handleEnded:(SlideBarView*)slideBarView touch:(UITouch*)touch;
+- (void)handleCanceled:(SlideBarView*)slideBarView;
+
+@end
 
 @interface SlideBarView : UIView {
 @private
-    MPLayerSupport *mLayerSupport;
-    CALayer *mTopLayer;
-    CALayer *mUnderLayer;
+    MPGlowLabel *mGrowLabel;
+    UISlider    *mSlider;
+    CGRect mGrooveRect;
+    CGRect mHandleRect;
+    
+    BOOL mSlideMoving;
+    BOOL mTouchDeteced;
 }
 
+@property (nonatomic) id<SlideBarViewDelegate> delegate;
+
 @property (nonatomic) NSString *displayText;
+@property (nonatomic) CGFloat leftPadding;
+@property (nonatomic) CGFloat rightPadding;
+@property (nonatomic) BOOL showRightHandler;
 
 @end

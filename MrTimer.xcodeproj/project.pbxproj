@@ -9,6 +9,12 @@
 /* Begin PBXBuildFile section */
 		47008589163831910042F814 /* MPColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47008588163831910042F814 /* MPColorUtil.m */; };
 		4700858F16385D2B0042F814 /* MPCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4700858E16385D2B0042F814 /* MPCustomView.m */; };
+		47A6437A163B82B9004ABE50 /* MPGlowLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A64379163B82B9004ABE50 /* MPGlowLabel.m */; };
+		47A64382163BA0A9004ABE50 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A64381163BA0A9004ABE50 /* clock.png */; };
+		47A64388163BA239004ABE50 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A64387163BA239004ABE50 /* empty.png */; };
+		47A6438B163C4368004ABE50 /* MPImageUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A6438A163C4368004ABE50 /* MPImageUtil.m */; };
+		47A6438E163C440C004ABE50 /* MPCoreGraphicsUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A6438D163C440C004ABE50 /* MPCoreGraphicsUtil.m */; };
+		47A64391163C48F0004ABE50 /* MPGradientButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A64390163C48F0004ABE50 /* MPGradientButton.m */; };
 		47BC690C1638F20800EC8091 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47BC690B1638F20800EC8091 /* QuartzCore.framework */; };
 		47BC69101638F7E300EC8091 /* MPLayerSupport.m in Sources */ = {isa = PBXBuildFile; fileRef = 47BC690F1638F7E300EC8091 /* MPLayerSupport.m */; };
 		47C5D97B163791E400F419F7 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 47C5D97A163791E400F419F7 /* UIKit.framework */; };
@@ -24,6 +30,7 @@
 		47C5D9A21637921800F419F7 /* MainViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 47C5D9A01637921800F419F7 /* MainViewController.xib */; };
 		47C5D9AB1637A47C00F419F7 /* ClockView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C5D9AA1637A47C00F419F7 /* ClockView.m */; };
 		47C5D9AE1637AAF200F419F7 /* SlideBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47C5D9AD1637AAF200F419F7 /* SlideBarView.m */; };
+		47E64FBE163A45C90016E503 /* PanelSlideBarView.m in Sources */ = {isa = PBXBuildFile; fileRef = 47E64FBD163A45C90016E503 /* PanelSlideBarView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -31,6 +38,16 @@
 		47008588163831910042F814 /* MPColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPColorUtil.m; path = ../../MPiOS/MPColorUtil.m; sourceTree = "<group>"; };
 		4700858D16385D2B0042F814 /* MPCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCustomView.h; path = ../../MPiOS/MPCustomView.h; sourceTree = "<group>"; };
 		4700858E16385D2B0042F814 /* MPCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCustomView.m; path = ../../MPiOS/MPCustomView.m; sourceTree = "<group>"; };
+		47A64378163B82B9004ABE50 /* MPGlowLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPGlowLabel.h; path = ../../MPiOS/MPGlowLabel.h; sourceTree = "<group>"; };
+		47A64379163B82B9004ABE50 /* MPGlowLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPGlowLabel.m; path = ../../MPiOS/MPGlowLabel.m; sourceTree = "<group>"; };
+		47A64381163BA0A9004ABE50 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
+		47A64387163BA239004ABE50 /* empty.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = empty.png; sourceTree = "<group>"; };
+		47A64389163C4368004ABE50 /* MPImageUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPImageUtil.h; path = ../../MPiOS/MPImageUtil.h; sourceTree = "<group>"; };
+		47A6438A163C4368004ABE50 /* MPImageUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPImageUtil.m; path = ../../MPiOS/MPImageUtil.m; sourceTree = "<group>"; };
+		47A6438C163C440C004ABE50 /* MPCoreGraphicsUtil.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCoreGraphicsUtil.h; path = ../../MPiOS/MPCoreGraphicsUtil.h; sourceTree = "<group>"; };
+		47A6438D163C440C004ABE50 /* MPCoreGraphicsUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCoreGraphicsUtil.m; path = ../../MPiOS/MPCoreGraphicsUtil.m; sourceTree = "<group>"; };
+		47A6438F163C48F0004ABE50 /* MPGradientButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPGradientButton.h; path = ../../MPiOS/MPGradientButton.h; sourceTree = "<group>"; };
+		47A64390163C48F0004ABE50 /* MPGradientButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPGradientButton.m; path = ../../MPiOS/MPGradientButton.m; sourceTree = "<group>"; };
 		47BC690B1638F20800EC8091 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		47BC690E1638F7E300EC8091 /* MPLayerSupport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPLayerSupport.h; path = ../../MPiOS/MPLayerSupport.h; sourceTree = "<group>"; };
 		47BC690F1638F7E300EC8091 /* MPLayerSupport.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPLayerSupport.m; path = ../../MPiOS/MPLayerSupport.m; sourceTree = "<group>"; };
@@ -54,6 +71,8 @@
 		47C5D9AA1637A47C00F419F7 /* ClockView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ClockView.m; path = ClockView/ClockView.m; sourceTree = "<group>"; };
 		47C5D9AC1637AAF200F419F7 /* SlideBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = SlideBarView.h; path = SlideBarView/SlideBarView.h; sourceTree = "<group>"; };
 		47C5D9AD1637AAF200F419F7 /* SlideBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = SlideBarView.m; path = SlideBarView/SlideBarView.m; sourceTree = "<group>"; };
+		47E64FBC163A45C90016E503 /* PanelSlideBarView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PanelSlideBarView.h; path = SlideBarView/PanelSlideBarView.h; sourceTree = "<group>"; };
+		47E64FBD163A45C90016E503 /* PanelSlideBarView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PanelSlideBarView.m; path = SlideBarView/PanelSlideBarView.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,12 +93,20 @@
 		4700858B163832590042F814 /* MPiOS */ = {
 			isa = PBXGroup;
 			children = (
+				47A6438F163C48F0004ABE50 /* MPGradientButton.h */,
+				47A64390163C48F0004ABE50 /* MPGradientButton.m */,
+				47A6438C163C440C004ABE50 /* MPCoreGraphicsUtil.h */,
+				47A6438D163C440C004ABE50 /* MPCoreGraphicsUtil.m */,
+				47A64389163C4368004ABE50 /* MPImageUtil.h */,
+				47A6438A163C4368004ABE50 /* MPImageUtil.m */,
 				47008587163831910042F814 /* MPColorUtil.h */,
 				47008588163831910042F814 /* MPColorUtil.m */,
 				4700858D16385D2B0042F814 /* MPCustomView.h */,
 				4700858E16385D2B0042F814 /* MPCustomView.m */,
 				47BC690E1638F7E300EC8091 /* MPLayerSupport.h */,
 				47BC690F1638F7E300EC8091 /* MPLayerSupport.m */,
+				47A64378163B82B9004ABE50 /* MPGlowLabel.h */,
+				47A64379163B82B9004ABE50 /* MPGlowLabel.m */,
 			);
 			name = MPiOS;
 			sourceTree = "<group>";
@@ -89,8 +116,19 @@
 			children = (
 				47C5D9AC1637AAF200F419F7 /* SlideBarView.h */,
 				47C5D9AD1637AAF200F419F7 /* SlideBarView.m */,
+				47E64FBC163A45C90016E503 /* PanelSlideBarView.h */,
+				47E64FBD163A45C90016E503 /* PanelSlideBarView.m */,
 			);
 			name = SlideBarView;
+			sourceTree = "<group>";
+		};
+		47A64380163BA0A9004ABE50 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				47A64381163BA0A9004ABE50 /* clock.png */,
+				47A64387163BA239004ABE50 /* empty.png */,
+			);
+			path = Images;
 			sourceTree = "<group>";
 		};
 		47C5D96B163791E400F419F7 = {
@@ -140,6 +178,7 @@
 		47C5D981163791E400F419F7 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				47A64380163BA0A9004ABE50 /* Images */,
 				47C5D982163791E400F419F7 /* MrTimer-Info.plist */,
 				47C5D983163791E400F419F7 /* InfoPlist.strings */,
 				47C5D986163791E400F419F7 /* main.m */,
@@ -216,6 +255,8 @@
 				47C5D98F163791E400F419F7 /* Default@2x.png in Resources */,
 				47C5D991163791E400F419F7 /* Default-568h@2x.png in Resources */,
 				47C5D9A21637921800F419F7 /* MainViewController.xib in Resources */,
+				47A64382163BA0A9004ABE50 /* clock.png in Resources */,
+				47A64388163BA239004ABE50 /* empty.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -234,6 +275,11 @@
 				47008589163831910042F814 /* MPColorUtil.m in Sources */,
 				4700858F16385D2B0042F814 /* MPCustomView.m in Sources */,
 				47BC69101638F7E300EC8091 /* MPLayerSupport.m in Sources */,
+				47E64FBE163A45C90016E503 /* PanelSlideBarView.m in Sources */,
+				47A6437A163B82B9004ABE50 /* MPGlowLabel.m in Sources */,
+				47A6438B163C4368004ABE50 /* MPImageUtil.m in Sources */,
+				47A6438E163C440C004ABE50 /* MPCoreGraphicsUtil.m in Sources */,
+				47A64391163C48F0004ABE50 /* MPGradientButton.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -17,9 +17,9 @@
     // Override point for customization after application launch.
     self.window.backgroundColor = [UIColor whiteColor];
     
-    MainViewController *vc = [[MainViewController alloc] initWithNibName:@"MainViewController"
+    mMainVC = [[MainViewController alloc] initWithNibName:@"MainViewController"
                                                                   bundle:nil];
-    [self.window setRootViewController:vc];
+    [self.window setRootViewController:mMainVC];
     [self.window makeKeyAndVisible];
     return YES;
 }
@@ -39,6 +39,7 @@
 - (void)applicationWillEnterForeground:(UIApplication *)application
 {
     // Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
+    [mMainVC refreshViews];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
