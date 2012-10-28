@@ -8,12 +8,42 @@
 
 #import <UIKit/UIKit.h>
 
+@class ClockView;
+@class MPLayerSupport;
+
+@protocol ClockViewDelegate <NSObject>
+
+- (void)scheduledTimeFinished:(ClockView *)clockView;
+
+@end
+
 @interface ClockView : UIView {
 @public
-    int mTimeInSeconds;
-    int mTotalSegs;
 @private
-    int mCircleSegs;
+    MPLayerSupport *mLayerSupport;
+    CALayer *mMinHand;
+    CALayer *mSecHand;
+    int mCurTime;
+    CGRect mClockRect;
 }
+
+@property (nonatomic) id<ClockViewDelegate> delegate;
+
+- (void)pause;
+- (void)resetWithAnimation:(BOOL)animated;
+
+- (void)tickToTime:(int)timeInSeconds;
+
++ (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size;
++ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size;
+
++ (void)rangeClockTimeInRect:(CGRect)rect
+              inContext:(CGContextRef)context
+                seconds:(int)seconds;
++ (void)clockTimeInRect:(CGRect)rect
+              inContext:(CGContextRef)context
+                minutes:(int)minutes
+                seconds:(int)seconds;
++ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context;
 
 @end

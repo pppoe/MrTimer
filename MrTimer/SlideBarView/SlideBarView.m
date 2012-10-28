@@ -148,7 +148,7 @@
     {
         CGFloat handleWidth = 25;
         CGFloat handleBorder = 0.8;
-        UIColor *handleColor1 = [MPColorUtil colorFromHex:0xFF969696];
+        UIColor *handleColor1 = [MPColorUtil colorFromHex:0xFF0367E7];
         UIColor *handleColor2 = [MPColorUtil colorFromHex:0xFF000000];
         
         int lineCounts = 3;
@@ -214,7 +214,6 @@
                                                toSize:CGSizeMake(CGRectGetHeight(grooveRect_inner),
                                                                  CGRectGetHeight(grooveRect_inner))];
     [mSlider setThumbImage:thumbImage forState:UIControlStateNormal];
-    
     [mGrowLabel setNeedsDisplay];
 }
 
