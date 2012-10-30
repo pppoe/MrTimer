@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		47008589163831910042F814 /* MPColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47008588163831910042F814 /* MPColorUtil.m */; };
 		4700858F16385D2B0042F814 /* MPCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4700858E16385D2B0042F814 /* MPCustomView.m */; };
+		47752F89164068C3003363AE /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 47752F88164068C3003363AE /* bg.png */; };
+		47752F8C16406BA5003363AE /* newbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 47752F8B16406BA5003363AE /* newbg.png */; };
 		47A6437A163B82B9004ABE50 /* MPGlowLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 47A64379163B82B9004ABE50 /* MPGlowLabel.m */; };
 		47A64382163BA0A9004ABE50 /* clock.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A64381163BA0A9004ABE50 /* clock.png */; };
 		47A64388163BA239004ABE50 /* empty.png in Resources */ = {isa = PBXBuildFile; fileRef = 47A64387163BA239004ABE50 /* empty.png */; };
@@ -38,6 +40,8 @@
 		47008588163831910042F814 /* MPColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPColorUtil.m; path = ../../MPiOS/MPColorUtil.m; sourceTree = "<group>"; };
 		4700858D16385D2B0042F814 /* MPCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCustomView.h; path = ../../MPiOS/MPCustomView.h; sourceTree = "<group>"; };
 		4700858E16385D2B0042F814 /* MPCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCustomView.m; path = ../../MPiOS/MPCustomView.m; sourceTree = "<group>"; };
+		47752F88164068C3003363AE /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
+		47752F8B16406BA5003363AE /* newbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newbg.png; sourceTree = "<group>"; };
 		47A64378163B82B9004ABE50 /* MPGlowLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPGlowLabel.h; path = ../../MPiOS/MPGlowLabel.h; sourceTree = "<group>"; };
 		47A64379163B82B9004ABE50 /* MPGlowLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPGlowLabel.m; path = ../../MPiOS/MPGlowLabel.m; sourceTree = "<group>"; };
 		47A64381163BA0A9004ABE50 /* clock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = clock.png; sourceTree = "<group>"; };
@@ -125,6 +129,8 @@
 		47A64380163BA0A9004ABE50 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				47752F8B16406BA5003363AE /* newbg.png */,
+				47752F88164068C3003363AE /* bg.png */,
 				47A64381163BA0A9004ABE50 /* clock.png */,
 				47A64387163BA239004ABE50 /* empty.png */,
 			);
@@ -257,6 +263,8 @@
 				47C5D9A21637921800F419F7 /* MainViewController.xib in Resources */,
 				47A64382163BA0A9004ABE50 /* clock.png in Resources */,
 				47A64388163BA239004ABE50 /* empty.png in Resources */,
+				47752F89164068C3003363AE /* bg.png in Resources */,
+				47752F8C16406BA5003363AE /* newbg.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

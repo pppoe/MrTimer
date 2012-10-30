@@ -23,8 +23,14 @@
     MPLayerSupport *mLayerSupport;
     CALayer *mMinHand;
     CALayer *mSecHand;
+    CALayer *mDial;
+    CALayer *mShadow;
+    
     int mCurTime;
     CGRect mClockRect;
+    
+    int mTicks;
+    int mSpeed;
 }
 
 @property (nonatomic) id<ClockViewDelegate> delegate;
@@ -44,6 +50,6 @@
               inContext:(CGContextRef)context
                 minutes:(int)minutes
                 seconds:(int)seconds;
-+ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context;
++ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context numOfMarks:(int)num_of_marks;
 
 @end
