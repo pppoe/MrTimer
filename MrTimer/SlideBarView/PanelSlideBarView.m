@@ -19,7 +19,7 @@
 @end
 
 @implementation PanelSlideBarView
-@synthesize panelContentView;
+@synthesize panelContentView, delegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -74,6 +74,11 @@
                                                  spaceGapHeight);
         [panelView addSubview:self.panelContentView];
     }
+    
+    mPanelCenterPt = panelView.center;
+    mPanelCenterPtAlter = CGPointMake(panelView.center.x,
+                                      panelView.center.y - spaceGapHeight);
+    mHasShownUp = NO;
 }
 
 - (void)drawRect:(CGRect)rect {
@@ -81,56 +86,113 @@
     [slideBarView setNeedsDisplay];
 }
 
-- (void)slidingFinished:(SlideBarView*)slideBarView {
-    
+- (void)slidingFinished:(SlideBarView*)slideBarView_ {
+    mDisableHandle = NO;
+    [self.delegate barSlided:self];
+//    int64_t delayInSeconds = 1.0;
+//    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
+//    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){        
+//        [slideBarView_ resetSlider];
+//    });
 }
 
-- (void)handleMoved:(SlideBarView *)slideBarView touch:(UITouch *)touch {
+- (void)handleMoved:(SlideBarView *)slideBarView touch:(UITouch *)touch {    
+    if (mDisableHandle)
+    {
+        return;
+    }
+
     CGPoint pt = [touch locationInView:self];
-    CGFloat newY = mPanelCenterPt.y + (pt.y - mDefaultHandlePt.y);
+    CGFloat newY = (*pTouchBeginCenterPt).y + (pt.y - mDefaultHandlePt.y);
     CGFloat maxY = MAX(mPanelCenterPt.y, mPanelCenterPtAlter.y);
     CGFloat minY = MIN(mPanelCenterPt.y, mPanelCenterPtAlter.y);
     panelView.center = CGPointMake(mPanelCenterPt.x, MAX(MIN(maxY, newY), minY));
 }
 
 - (void)handleEnded:(SlideBarView*)slideBarView touch:(UITouch *)touch {    
-    
+    if (mDisableHandle)
+    {
+        return;
+    }
+
     CGPoint pt = [touch locationInView:self];
-    CGPoint retCtr = (fabs(pt.y - mDefaultHandlePt.y)
-                      > 0.6*fabs(mPanelCenterPtAlter.y - mPanelCenterPt.y)) ?
-    mPanelCenterPtAlter : mPanelCenterPt;
     
-    [UIView beginAnimations:@"" context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-    panelView.center = retCtr;
-    [UIView commitAnimations];
+    if (fabs(pt.y - mDefaultHandlePt.y)
+                      > 0.4*fabs(mPanelCenterPtAlter.y - mPanelCenterPt.y))
+    {
+        if (pt.y > mDefaultHandlePt.y)
+        {
+            if ([self.delegate panelShouldMovedDown:self])
+            {
+                [self slideDown];
+                return;
+            }
+        }
+        else
+        {
+            [self showUp];
+            return;
+        }
+    }
     
-    mIsScrolling = NO;
+    {
+        [UIView beginAnimations:@"" context:nil];
+        [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+        panelView.center = *pTouchBeginCenterPt;
+        [UIView commitAnimations];
+    }
 }
 
 - (void)handleTouched:(SlideBarView*)slideBarView touch:(UITouch *)touch {
-    mPanelCenterPt = panelView.center;
-    CGFloat spaceGapHeight = CGRectGetHeight(self.bounds)-kSlideBarViewHeight;
-    if (mPanelCenterPt.y > CGRectGetHeight(self.bounds))
+    if (mDisableHandle)
     {
-        mPanelCenterPtAlter = CGPointMake(panelView.center.x,
-                                          panelView.center.y - spaceGapHeight);
-    }
-    else
-    {
-        mPanelCenterPtAlter = CGPointMake(panelView.center.x,
-                                          panelView.center.y + spaceGapHeight);
+        return;
     }
     mDefaultHandlePt = [touch locationInView:self];
-    mIsScrolling = YES;
+    pTouchBeginCenterPt = (!mHasShownUp ? &mPanelCenterPt : &mPanelCenterPtAlter);
 }
 
 - (void)handleCanceled:(SlideBarView*)slideBarView {
+    if (mDisableHandle)
+    {
+        return;
+    }
+    [UIView beginAnimations:@"" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    panelView.center = *pTouchBeginCenterPt;
+    [UIView commitAnimations];
+}
+
+- (void)showUp {
+    [UIView beginAnimations:@"" context:nil];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    panelView.center = mPanelCenterPtAlter;
+    [UIView commitAnimations];
+    
+    [slideBarView disableWithText:NSLocalizedString(@"SELECT_YOUR_TIMER", @"select your timer")];
+    mHasShownUp = YES;
+    
+    [self.delegate panelMovedUp:self];
+}
+
+- (void)slideDown {
     [UIView beginAnimations:@"" context:nil];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     panelView.center = mPanelCenterPt;
     [UIView commitAnimations];
-    mIsScrolling = NO;
+    
+    [slideBarView enable];
+    mHasShownUp = NO;
+    
+    [self.delegate panelMovedDown:self];
+}
+
+- (void)disableHandle {
+    mDisableHandle = YES;
+}
+
+- (void)enableHandle {
+    mDisableHandle = NO;
 }
 
 @end

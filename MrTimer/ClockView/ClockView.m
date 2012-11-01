@@ -11,6 +11,7 @@
 #import "MPColorUtil.h"
 #import "MPLayerSupport.h"
 #import <QuartzCore/QuartzCore.h>
+#import "MPAnimationUtil.h"
 
 #define kSecondsPerMin 60
 #define kMinutesPerHour 60
@@ -19,6 +20,12 @@
 #define kAnimationKeySecondHand @"kAnimationKeySecondHand"
 #define kAnimationKeyMinuteHand @"kAnimationKeyMinuteHand"
 #define kAnimationKeyTime       @"kAnimationKeyTime"
+
+#define kAnimationKeyFlashRed   @"kAnimationKeyFlashRed"
+
+#define kSaveFileName @"kSaveFileName.plist"
+#define kSaveContentKeyTicks @"kSaveContentKeyTicks"
+#define kSaveContentKeyDate @"kSaveContentKeyDate"
 
 @interface ClockView ()
 
@@ -70,11 +77,48 @@
         mSecHand.frame = self.bounds;
         [self.layer addSublayer:mSecHand];
         
+        //< Listen to Fore/back ground notification
+        //< Save Ticks
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(appResignActive)
+                                                     name:UIApplicationWillResignActiveNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(appBecomeActive)
+                                                     name:UIApplicationDidBecomeActiveNotification
+                                                   object:nil];
     }
     
-    mTicks = 0; //<
+    mTicks = 60*40+25; //<
     mSpeed = 1; //< Ticks per second
-    
+    NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
+                                                           inDomains:NSUserDomainMask];
+    mTemporaryFilePath = [[[[urls objectAtIndex:0] path]
+                          stringByAppendingPathComponent:kSaveFileName] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+}
+
+- (void)appResignActive {
+    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
+                          [NSNumber numberWithInt:mTicks], kSaveContentKeyTicks,
+                          [NSDate date], kSaveContentKeyDate, nil];
+    [dict writeToFile:mTemporaryFilePath
+           atomically:YES];
+    NSLog(@"Ticks %d", mTicks);
+}
+
+- (void)appBecomeActive {
+    if (mIsRunning)
+    {
+        NSLog(@"%@", mTemporaryFilePath);
+        if ([[NSFileManager defaultManager] fileExistsAtPath:mTemporaryFilePath])
+        {
+            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:mTemporaryFilePath];
+            mTicks = [[dict objectForKey:kSaveContentKeyTicks] intValue];
+            NSDate *date = [dict objectForKey:kSaveContentKeyDate];
+            mTicks = MIN((mTicks + [[NSDate date] timeIntervalSinceDate:date]*mSpeed),
+                         (mCurTime*mSpeed));
+        }
+    }
 }
 
 + (void)clockTimeInRect:(CGRect)rect
@@ -93,7 +137,7 @@
         CGContextBeginPath(context);
         [MPCoreGraphicsUtil addRectangleInContext:context
                                      bottomCenter:ctrPt
-                                  withBottomWidth:8
+                                  withBottomWidth:3
                                        withHeight:minHeight
                                  withExtendHeight:2
                                         direction:(minutes/(float)kMinutesPerHour*M_PI*2 - M_PI_2)
@@ -105,7 +149,7 @@
         CGContextBeginPath(context);
         [MPCoreGraphicsUtil addRectangleInContext:context
                                      bottomCenter:ctrPt
-                                  withBottomWidth:5
+                                  withBottomWidth:2
                                        withHeight:secHeight
                                  withExtendHeight:2
                                         direction:(seconds/(float)kSecondsPerMin*M_PI*2 - M_PI_2)
@@ -236,35 +280,12 @@
     }
     else if (layer == mDial)
     {
-        UIColor *inner_borderColor = [[MPColorUtil colorFromHex:0xFFF9AD81] colorWithAlphaComponent:0.0f];
+        //UIColor *inner_borderColor = [[MPColorUtil colorFromHex:0xFFF9AD81] colorWithAlphaComponent:0.0f];
 
         rect = mClockRect;
         
         CGContextSetBlendMode(context, kCGBlendModeCopy);
         
-//        CGContextBeginPath(context);
-//        CGGradientRef gradient = [MPCoreGraphicsUtil
-//                                  createGradientFromColorTop:[MPColorUtil colorFromHex:0xFF000000]
-//                                  colorBottom:[MPColorUtil colorFromHex:0xFF3E3E3E]];
-//        CGPoint startP = CGPointMake(rect.origin.x + rect.size.width/4.0f,
-//                                     rect.origin.y + rect.size.height/4.0f);
-//        CGPoint endP = CGPointMake(rect.origin.x + rect.size.width*0.75f,
-//                                   rect.origin.y + rect.size.height*0.75f);
-//        [MPCoreGraphicsUtil addRoundedPathInContext:context
-//                                           WithRect:CGRectInset(rect, -20, -20)
-//                                        borderWidth:10.0
-//                                          andRadius:10];
-//        CGContextClip(context);
-//        CGContextDrawLinearGradient(context, gradient, startP, endP, kCGGradientDrawsBeforeStartLocation|kCGGradientDrawsAfterEndLocation);
-//        CGGradientRelease(gradient);
-        
-//        CGContextBeginPath(context);
-//        CGContextAddEllipseInRect(context, rect);
-//        CGContextClosePath(context);
-//        CGContextSetLineWidth(context, 1);
-//        [inner_borderColor setFill];
-//        CGContextFillPath(context);
-
         CGContextAddEllipseInRect(context, rect);
         CGContextClip(context);
         [MPCoreGraphicsUtil renderCenterCircleGradient:context
@@ -273,20 +294,6 @@
                                         innerColorCode:0xFF3E3E3E
                                                 radius:MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))*0.9
                                                options:kCGGradientDrawsBeforeStartLocation|kCGGradientDrawsAfterEndLocation];
-        
-//        CGContextBeginPath(context);
-//        CGGradientRef gradient = [MPCoreGraphicsUtil
-//                                  createGradientFromColorTop:[MPColorUtil colorFromHex:0xFF3E3E3E]
-//                                  colorBottom:[MPColorUtil colorFromHex:0xFF000000]];
-//        CGPoint startP = CGPointMake(rect.origin.x + rect.size.width/4.0f,
-//                                     rect.origin.y + rect.size.height/4.0f);
-//        CGPoint endP = CGPointMake(rect.origin.x + rect.size.width*0.95f,
-//                                   rect.origin.y + rect.size.height*0.95f);
-//        CGContextAddEllipseInRect(context, rect);
-//        CGContextClip(context);
-//        CGContextDrawLinearGradient(context, gradient, startP, endP, kCGGradientDrawsBeforeStartLocation|kCGGradientDrawsAfterEndLocation);
-//        CGGradientRelease(gradient);
-
         [ClockView clockDetailsInRect:CGRectInset(rect, 10, 10) inContext:context numOfMarks:kFullNumberOfMarks];
 
         if (!mShadow)
@@ -318,11 +325,47 @@
     UIGraphicsPopContext();    
 }
 
-- (void)pause {
+
+- (void)flashGreen {
+    [self flashColor:[UIColor greenColor]
+            maxAlpha:1.0
+            minAlpha:0
+        increaseTime:1.0
+        decreaseTime:4.0];
+}
+
+- (void)flashRed {
+    [self flashColor:[UIColor redColor]
+            maxAlpha:1.0
+            minAlpha:0
+        increaseTime:1.0
+        decreaseTime:1.0];
+}
+
+- (void)flashColor:(UIColor *)color
+          maxAlpha:(float)maxAlpha
+          minAlpha:(float)minAlpha
+      increaseTime:(float)increaseTime
+      decreaseTime:(float)decreaseTime {
+    
+    CAAnimation *anim = [MPAnimationUtil flashColor:color
+                                           maxAlpha:maxAlpha
+                                           minAlpha:minAlpha
+                                       increaseTime:increaseTime
+                                       decreaseTime:decreaseTime];
+    [mShadow addAnimation:anim forKey:kAnimationKeyFlashRed];
+}
+
+- (BOOL)running {
+    return mIsRunning;
 }
 
 - (void)resetWithAnimation:(BOOL)animated {
-    [self setToTime:0 animated:animated speed:1];
+    if (mNotification)
+    {
+        [[UIApplication sharedApplication] cancelLocalNotification:mNotification];
+    }
+   [self setToTime:0 animated:animated speed:1];
 }
 
 - (void)moveHands {
@@ -341,8 +384,9 @@
 
     if (mTicks < mCurTime*mSpeed)
     {
+        mIsRunning = YES;
         mTicks++;
-        [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
+        mCurTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
                                          target:self
                                        selector:@selector(updateCycle)
                                        userInfo:nil
@@ -350,8 +394,14 @@
     }
     else
     {
-        [self.delegate scheduledTimeFinished:self];
+        if (mIsRunning)
+        {
+            NSLog(@"presentLocalNotificationNow");
+            [[UIApplication sharedApplication] presentLocalNotificationNow:mNotification];
+            [self.delegate scheduledTimeFinished:self];
+        }
         mTicks = 0;
+        mIsRunning = NO;
     }
 }
 
@@ -363,12 +413,27 @@
 }
 
 - (void)tickToTime:(int)timeInSeconds {
-    
+    [self flashRed];
     [self setToTime:0 animated:YES speed:1];
     int64_t delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
+
+        if (!mNotification)
+        {
+            mNotification = [[UILocalNotification alloc] init];
+        }
+        [[UIApplication sharedApplication] cancelLocalNotification:mNotification];
+        {
+            mNotification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInSeconds];
+            mNotification.alertBody = NSLocalizedString(@"TIMER_FINISHED", @"timer finished");
+            mNotification.soundName = @"time_up.aiff";
+            mNotification.hasAction = YES;
+        }
+        //< Prepare a Notification
+        [[UIApplication sharedApplication] scheduleLocalNotification:mNotification];
         [self setToTime:timeInSeconds animated:YES speed:1];
+        
     });
 }
 

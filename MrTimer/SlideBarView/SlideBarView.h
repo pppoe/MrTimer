@@ -39,4 +39,9 @@
 @property (nonatomic) CGFloat rightPadding;
 @property (nonatomic) BOOL showRightHandler;
 
+- (void)resetSlider;
+
+- (void)disableWithText:(NSString*)textStr;
+- (void)enable;
+
 @end

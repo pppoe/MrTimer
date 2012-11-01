@@ -31,11 +31,16 @@
     
     int mTicks;
     int mSpeed;
+    
+    UILocalNotification *mNotification;
+    BOOL mIsRunning;
+    NSTimer *mCurTimer;
+    NSString *mTemporaryFilePath;
 }
 
 @property (nonatomic) id<ClockViewDelegate> delegate;
 
-- (void)pause;
+- (BOOL)running;
 - (void)resetWithAnimation:(BOOL)animated;
 
 - (void)tickToTime:(int)timeInSeconds;
@@ -51,5 +56,13 @@
                 minutes:(int)minutes
                 seconds:(int)seconds;
 + (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context numOfMarks:(int)num_of_marks;
+
+- (void)flashRed;
+- (void)flashGreen;
+- (void)flashColor:(UIColor *)color
+          maxAlpha:(float)maxAlpha
+          minAlpha:(float)minAlpha
+      increaseTime:(float)increaseTime
+      decreaseTime:(float)decreaseTime;
 
 @end

@@ -44,7 +44,7 @@
     self.leftPadding = 0;
     self.rightPadding = 0;
     self.backgroundColor = [MPColorUtil colorFromHex:0xFF403E3F];
-    self.displayText =  @"slide to stop";
+    self.displayText = NSLocalizedString(@"SLIDE_TO_STOP", @"slide to stop");
     
     if (!mGrowLabel)
     {
@@ -281,6 +281,24 @@
         [self.delegate handleCanceled:self];
     }
     mTouchDeteced = NO;
+}
+
+- (void)resetSlider {
+    [mSlider setValue:0 animated:YES];
+}
+
+- (void)disableWithText:(NSString*)textStr {
+    mGrowLabel.text = textStr;
+    [mGrowLabel stopGlowing];
+    [mSlider setValue:1.0 animated:YES];
+    mSlider.enabled = NO;
+}
+
+- (void)enable {
+    mGrowLabel.text = self.displayText;
+    [mGrowLabel resumeGlowing];
+    [mSlider setValue:0.0 animated:YES];
+    mSlider.enabled = YES;
 }
 
 @end
