@@ -367,6 +367,8 @@
                                            minAlpha:minAlpha
                                        increaseTime:increaseTime
                                        decreaseTime:decreaseTime
+                                       restoreColor:[UIColor blackColor]
+                                        restoreTime:1
                                             keyPath:@"shadowColor"];
     [mShadow addAnimation:anim forKey:kAnimationKeyFlashRed];
 }
