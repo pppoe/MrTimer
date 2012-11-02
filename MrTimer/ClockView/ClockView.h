@@ -36,6 +36,8 @@
     BOOL mIsRunning;
     NSTimer *mCurTimer;
     NSString *mTemporaryFilePath;
+    UInt32 mSoundID;
+    UInt32 mFinishSoundID;
 }
 
 @property (nonatomic) id<ClockViewDelegate> delegate;

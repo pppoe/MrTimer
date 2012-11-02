@@ -11,11 +11,12 @@
 #import "MPColorUtil.h"
 #import "MPLayerSupport.h"
 #import <QuartzCore/QuartzCore.h>
+#import <AudioToolbox/AudioToolbox.h>
 #import "MPAnimationUtil.h"
 
 #define kSecondsPerMin 60
 #define kMinutesPerHour 60
-#define kFullNumberOfMarks 24
+#define kFullNumberOfMarks 12
 
 #define kAnimationKeySecondHand @"kAnimationKeySecondHand"
 #define kAnimationKeyMinuteHand @"kAnimationKeyMinuteHand"
@@ -97,6 +98,12 @@
                                                            inDomains:NSUserDomainMask];
     mTemporaryFilePath = [[[[urls objectAtIndex:0] path]
                           stringByAppendingPathComponent:kSaveFileName] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+    NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"tick" ofType:@"aiff"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: soundPath], &mSoundID);
+    
+    soundPath = [[NSBundle mainBundle] pathForResource:@"time_up" ofType:@"aiff"];
+    AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: soundPath],
+                                     &mFinishSoundID);
 }
 
 - (void)appResignActive {
@@ -105,13 +112,13 @@
                           [NSDate date], kSaveContentKeyDate, nil];
     [dict writeToFile:mTemporaryFilePath
            atomically:YES];
-    NSLog(@"Ticks %d", mTicks);
+    [mCurTimer invalidate];
+//    NSLog(@"Ticks %d", mTicks);
 }
 
 - (void)appBecomeActive {
     if (mIsRunning)
     {
-        NSLog(@"%@", mTemporaryFilePath);
         if ([[NSFileManager defaultManager] fileExistsAtPath:mTemporaryFilePath])
         {
             NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:mTemporaryFilePath];
@@ -119,6 +126,7 @@
             NSDate *date = [dict objectForKey:kSaveContentKeyDate];
             mTicks = MIN((mTicks + [[NSDate date] timeIntervalSinceDate:date]*mSpeed),
                          (mCurTime*mSpeed));
+            [self updateCycle];
         }
     }
 }
@@ -135,29 +143,29 @@
     CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
     UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
     [markColor setFill];
+    [markColor setStroke];
     {
         //< Mins
         CGContextBeginPath(context);
-        [MPCoreGraphicsUtil addRectangleInContext:context
+        [MPCoreGraphicsUtil addLineInContext:context
                                      bottomCenter:ctrPt
-                                  withBottomWidth:3
                                        withHeight:minHeight
-                                 withExtendHeight:2
+                                 withExtendHeight:1
                                         direction:(minutes/(float)kMinutesPerHour*M_PI*2 - M_PI_2)
                                    rotationCenter:ctrPt];
-        CGContextFillPath(context);
+        CGContextStrokePath(context);
     }
     {
         //< Seconds
         CGContextBeginPath(context);
-        [MPCoreGraphicsUtil addRectangleInContext:context
+        [MPCoreGraphicsUtil addLineInContext:context
                                      bottomCenter:ctrPt
-                                  withBottomWidth:2
                                        withHeight:secHeight
-                                 withExtendHeight:2
+                                 withExtendHeight:1
                                         direction:(seconds/(float)kSecondsPerMin*M_PI*2 - M_PI_2)
                                    rotationCenter:ctrPt];
-        CGContextFillPath(context);
+//        CGContextFillPath(context);
+        CGContextStrokePath(context);
     }
 }
 
@@ -174,7 +182,7 @@
         [MPCoreGraphicsUtil addRectangleInContext:context
                                      bottomCenter:CGPointMake(CGRectGetMinX(rect), CGRectGetMidY(rect))
                                   withBottomWidth:2
-                                       withHeight:(i%2 == 0 ? 2*markHeight : markHeight)
+                                       withHeight:markHeight//(i%2 == 0 ? 2*markHeight : markHeight)
                                  withExtendHeight:0
                                         direction:i/(float)num_of_marks*M_PI*2 - M_PI_2
                                    rotationCenter:ctrPt];
@@ -185,7 +193,7 @@
 + (void)rangeClockTimeInRect:(CGRect)rect
                    inContext:(CGContextRef)context
                      seconds:(int)seconds
-                   withColor:(int)colorCode {
+               withColorCode:(int)colorCode {
     
     float radius = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/2;
     CGFloat secHeight = radius*0.9;
@@ -391,6 +399,7 @@
 
     if (mTicks < mCurTime*mSpeed)
     {
+        AudioServicesPlaySystemSound (mSoundID);
         mIsRunning = YES;
         mTicks++;
         mCurTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
@@ -403,7 +412,8 @@
     {
         if (mIsRunning)
         {
-            NSLog(@"presentLocalNotificationNow");
+//            NSLog(@"presentLocalNotificationNow");
+            AudioServicesPlaySystemSound (mFinishSoundID);
             [[UIApplication sharedApplication] presentLocalNotificationNow:mNotification];
             [self.delegate scheduledTimeFinished:self];
         }
@@ -476,7 +486,7 @@
     [ClockView rangeClockTimeInRect:rect
                      inContext:context
                   seconds:timeInSeconds%kSecondsPerMin
-                          withColor:colorCode];
+                      withColorCode:colorCode];
     [ClockView clockDetailsInRect:rect inContext:context
                        numOfMarks:12
                     withColorCode:colorCode];

@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		47008589163831910042F814 /* MPColorUtil.m in Sources */ = {isa = PBXBuildFile; fileRef = 47008588163831910042F814 /* MPColorUtil.m */; };
 		4700858F16385D2B0042F814 /* MPCustomView.m in Sources */ = {isa = PBXBuildFile; fileRef = 4700858E16385D2B0042F814 /* MPCustomView.m */; };
+		4747A8DD1644665500E19F7F /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4747A8DC1644665500E19F7F /* AudioToolbox.framework */; };
 		47752F89164068C3003363AE /* bg.png in Resources */ = {isa = PBXBuildFile; fileRef = 47752F88164068C3003363AE /* bg.png */; };
 		47752F8C16406BA5003363AE /* newbg.png in Resources */ = {isa = PBXBuildFile; fileRef = 47752F8B16406BA5003363AE /* newbg.png */; };
 		47752FA4164092A6003363AE /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 47752F9B164092A6003363AE /* InfoPlist.strings */; };
@@ -46,6 +47,7 @@
 		47008588163831910042F814 /* MPColorUtil.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPColorUtil.m; path = ../../MPiOS/MPColorUtil.m; sourceTree = "<group>"; };
 		4700858D16385D2B0042F814 /* MPCustomView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MPCustomView.h; path = ../../MPiOS/MPCustomView.h; sourceTree = "<group>"; };
 		4700858E16385D2B0042F814 /* MPCustomView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MPCustomView.m; path = ../../MPiOS/MPCustomView.m; sourceTree = "<group>"; };
+		4747A8DC1644665500E19F7F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		47752F88164068C3003363AE /* bg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = bg.png; sourceTree = "<group>"; };
 		47752F8B16406BA5003363AE /* newbg.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = newbg.png; sourceTree = "<group>"; };
 		47752F9C164092A6003363AE /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = InfoPlist.strings; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4747A8DD1644665500E19F7F /* AudioToolbox.framework in Frameworks */,
 				47BC690C1638F20800EC8091 /* QuartzCore.framework in Frameworks */,
 				47C5D97B163791E400F419F7 /* UIKit.framework in Frameworks */,
 				47C5D97D163791E400F419F7 /* Foundation.framework in Frameworks */,
@@ -199,6 +202,7 @@
 		47C5D979163791E400F419F7 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				4747A8DC1644665500E19F7F /* AudioToolbox.framework */,
 				47BC690B1638F20800EC8091 /* QuartzCore.framework */,
 				47C5D97A163791E400F419F7 /* UIKit.framework */,
 				47C5D97C163791E400F419F7 /* Foundation.framework */,
