@@ -45,17 +45,23 @@
 
 - (void)tickToTime:(int)timeInSeconds;
 
-+ (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size;
-+ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size;
++ (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode;
++ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode;
 
 + (void)rangeClockTimeInRect:(CGRect)rect
-              inContext:(CGContextRef)context
-                seconds:(int)seconds;
+                   inContext:(CGContextRef)context
+                     seconds:(int)seconds
+               withColorCode:(int)colorCode;
+
 + (void)clockTimeInRect:(CGRect)rect
               inContext:(CGContextRef)context
                 minutes:(int)minutes
-                seconds:(int)seconds;
-+ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context numOfMarks:(int)num_of_marks;
+                seconds:(int)seconds
+          withColorCode:(int)colorCode;
+
++ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context
+                numOfMarks:(int)num_of_marks
+             withColorCode:(int)colorCode;
 
 - (void)flashRed;
 - (void)flashGreen;

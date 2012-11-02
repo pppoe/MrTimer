@@ -27,6 +27,8 @@
 #define kSaveContentKeyTicks @"kSaveContentKeyTicks"
 #define kSaveContentKeyDate @"kSaveContentKeyDate"
 
+#define kMainBlueColor 0xFF0367E7
+
 @interface ClockView ()
 
 //< Schedule Timer and Animation
@@ -124,13 +126,14 @@
 + (void)clockTimeInRect:(CGRect)rect
               inContext:(CGContextRef)context
                 minutes:(int)minutes
-                seconds:(int)seconds {
+                seconds:(int)seconds
+          withColorCode:(int)colorCode {
     
     CGFloat secHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.6;
     CGFloat minHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.4;
 
     CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    UIColor *markColor = [MPColorUtil colorFromHex:0xFF0367E7];
+    UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
     [markColor setFill];
     {
         //< Mins
@@ -158,10 +161,12 @@
     }
 }
 
-+ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context numOfMarks:(int)num_of_marks {
++ (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context
+                numOfMarks:(int)num_of_marks
+             withColorCode:(int)colorCode {
     CGFloat markHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.05;
     CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    UIColor *markColor = [MPColorUtil colorFromHex:0xFF0367E7];
+    UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
     [markColor setFill];
     for (int i = 0; i < num_of_marks; i++)
     {
@@ -179,7 +184,8 @@
 
 + (void)rangeClockTimeInRect:(CGRect)rect
                    inContext:(CGContextRef)context
-                     seconds:(int)seconds {
+                     seconds:(int)seconds
+                   withColor:(int)colorCode {
     
     float radius = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/2;
     CGFloat secHeight = radius*0.9;
@@ -189,7 +195,7 @@
     
     CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
     {
-        UIColor *markColor = [MPColorUtil colorFromHex:0xFF0367E7];
+        UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
         [markColor setFill];
         //< Seconds
         CGContextBeginPath(context);
@@ -294,7 +300,7 @@
                                         innerColorCode:0xFF3E3E3E
                                                 radius:MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))*0.9
                                                options:kCGGradientDrawsBeforeStartLocation|kCGGradientDrawsAfterEndLocation];
-        [ClockView clockDetailsInRect:CGRectInset(rect, 10, 10) inContext:context numOfMarks:kFullNumberOfMarks];
+        [ClockView clockDetailsInRect:CGRectInset(rect, 10, 10) inContext:context numOfMarks:kFullNumberOfMarks withColorCode:kMainBlueColor];
 
         if (!mShadow)
         {
@@ -352,7 +358,8 @@
                                            maxAlpha:maxAlpha
                                            minAlpha:minAlpha
                                        increaseTime:increaseTime
-                                       decreaseTime:decreaseTime];
+                                       decreaseTime:decreaseTime
+                                            keyPath:@"shadowColor"];
     [mShadow addAnimation:anim forKey:kAnimationKeyFlashRed];
 }
 
@@ -437,17 +444,20 @@
     });
 }
 
-+ (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size {
++ (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode {
     
     UIImage *image = nil;
     
     UIGraphicsBeginImageContext(size);
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    [ClockView clockDetailsInRect:rect inContext:context numOfMarks:kFullNumberOfMarks];
+    [ClockView clockDetailsInRect:rect inContext:context
+                       numOfMarks:kFullNumberOfMarks
+                    withColorCode:colorCode];
     [ClockView clockTimeInRect:rect inContext:context
                   minutes:floor(timeInSeconds/(float)kSecondsPerMin)
-                  seconds:timeInSeconds%kSecondsPerMin];
+                  seconds:timeInSeconds%kSecondsPerMin
+                 withColorCode:colorCode];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     
@@ -456,7 +466,7 @@
     return image;
 }
 
-+ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size {
++ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode {
     
     UIImage *image = nil;
     
@@ -465,8 +475,11 @@
     CGRect rect = CGRectMake(0, 0, size.width, size.height);
     [ClockView rangeClockTimeInRect:rect
                      inContext:context
-                  seconds:timeInSeconds%kSecondsPerMin];
-    [ClockView clockDetailsInRect:rect inContext:context numOfMarks:12];
+                  seconds:timeInSeconds%kSecondsPerMin
+                          withColor:colorCode];
+    [ClockView clockDetailsInRect:rect inContext:context
+                       numOfMarks:12
+                    withColorCode:colorCode];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     

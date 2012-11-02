@@ -170,6 +170,7 @@
     [UIView commitAnimations];
     
     [slideBarView disableWithText:NSLocalizedString(@"SELECT_YOUR_TIMER", @"select your timer")];
+    [self enableHandle];
     mHasShownUp = YES;
     
     [self.delegate panelMovedUp:self];
@@ -182,6 +183,7 @@
     [UIView commitAnimations];
     
     [slideBarView enable];
+    [self disableHandle];
     mHasShownUp = NO;
     
     [self.delegate panelMovedDown:self];
