@@ -382,6 +382,7 @@
     {
         [[UIApplication sharedApplication] cancelLocalNotification:mNotification];
     }
+    mIsRunning = NO;
    [self setToTime:0 animated:animated speed:1];
 }
 
@@ -391,19 +392,43 @@
     
     float min_rotation = curTimeInMins*M_PI*2;
     float sec_rotation = curTimeInSeconds*M_PI*2;
+    
+//    CABasicAnimation *minAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+//    minAnim.fromValue = [NSValue valueWithCATransform3D:mMinHand.transform];
+//    minAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(min_rotation, 0, 0, 1)];
+//    minAnim.removedOnCompletion = YES;
+//    minAnim.duration = 1.0/mSpeed;
+//    [mMinHand addAnimation:minAnim forKey:kAnimationKeyMinuteHand];
+
+//    CABasicAnimation *secAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
+//    secAnim.fromValue = [NSValue valueWithCATransform3D:mSecHand.transform];
+//    secAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(sec_rotation, 0, 0, 1)];
+//    secAnim.removedOnCompletion = YES;
+//    mSecHand.duration = 1.0/mSpeed;
+//    [mSecHand addAnimation:secAnim forKey:kAnimationKeySecondHand];
+
     mMinHand.transform = CATransform3DMakeRotation(min_rotation, 0, 0, 1);
     mSecHand.transform = CATransform3DMakeRotation(sec_rotation, 0, 0, 1);
 }
 
 - (void)updateCycle {
 
+//    float curTimeInSeconds = (float)mTicks/kSecondsPerMin;
+//    float curTimeInMins = curTimeInSeconds/kMinutesPerHour;
+//    
+//    float min_rotation = curTimeInMins*M_PI*2;
+//    float sec_rotation = curTimeInSeconds*M_PI*2;
+//    
+//    mMinHand.transform = CATransform3DMakeRotation(min_rotation, 0, 0, 1);
+//    mSecHand.transform = CATransform3DMakeRotation(sec_rotation, 0, 0, 1);
+
     [self moveHands];
 
     if (mTicks < mCurTime*mSpeed)
     {
         AudioServicesPlaySystemSound (mSoundID);
+        mTicks++;        
         mIsRunning = YES;
-        mTicks++;
         mCurTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
                                          target:self
                                        selector:@selector(updateCycle)
