@@ -55,7 +55,6 @@
         slideBarView = [[SlideBarView alloc] initWithFrame:CGRectMake(0, 0,
                                                                       CGRectGetWidth(self.bounds),
                                                                       kSlideBarViewHeight)];
-        slideBarView.rightPadding = 40;
         slideBarView.delegate = self;
         [panelView addSubview:slideBarView];
     }
@@ -165,7 +164,8 @@
 
 - (void)showUp {
     [UIView beginAnimations:@"" context:nil];
-    [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+    [UIView setAnimationDuration:1.0f];
+    [UIView setAnimationCurve:UIViewAnimationCurveEaseIn];
     panelView.center = mPanelCenterPtAlter;
     [UIView commitAnimations];
     
@@ -178,6 +178,7 @@
 
 - (void)slideDown {
     [UIView beginAnimations:@"" context:nil];
+    [UIView setAnimationDuration:1.0f];
     [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
     panelView.center = mPanelCenterPt;
     [UIView commitAnimations];

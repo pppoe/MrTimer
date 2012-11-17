@@ -48,9 +48,12 @@
     if (self) {
         mContentDict = [NSMutableDictionary
                         dictionaryWithObjectsAndKeys:
-                        [NSNumber numberWithInt:15*60], kContentDictKeyLeftTime,
-                        [NSNumber numberWithInt:30*60], kContentDictKeyMiddleTime,
-                        [NSNumber numberWithInt:60*60], kContentDictKeyRightTime,
+//                        [NSNumber numberWithInt:15*60], kContentDictKeyLeftTime,
+//                        [NSNumber numberWithInt:30*60], kContentDictKeyMiddleTime,
+//                        [NSNumber numberWithInt:60*60], kContentDictKeyRightTime,
+                        [NSNumber numberWithInt:15], kContentDictKeyLeftTime,
+                        [NSNumber numberWithInt:5*60], kContentDictKeyMiddleTime,
+                        [NSNumber numberWithInt:15*60], kContentDictKeyRightTime,
 //                        [NSNumber numberWithInt:15], kContentDictKeyLeftTime,
 //                        [NSNumber numberWithInt:30], kContentDictKeyMiddleTime,
 //                        [NSNumber numberWithInt:60], kContentDictKeyRightTime,
@@ -72,8 +75,6 @@
         UIImage *image = [ClockView imageOfTime:timeInSeconds
                                        withSize:CGSizeMake(kClockButtonSize, kClockButtonSize)
                                       withColor:kMainBlueColor];
-//        UIImage *image = [ClockView imageRangeOfTime:(timeInSeconds/60)
-//                                       withSize:CGSizeMake(kClockButtonSize, kClockButtonSize)];
         [btn setImage:image forState:UIControlStateNormal];
         
         NSString *dateStr = [NSString stringWithFormat:@"%02d:%02d",

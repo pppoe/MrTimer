@@ -32,14 +32,19 @@
 
 @interface ClockView ()
 
+@property (nonatomic) NSDate *startDate;
+@property (nonatomic) NSDate *endDate;
+
 //< Schedule Timer and Animation
-- (void)setToTime:(int)timeInSeconds animated:(BOOL)animated speed:(int)speed;
-- (void)moveHands;
+- (void)setToTime:(int)timeInSeconds animated:(BOOL)animated speed:(float)speed;
+- (void)moveHands:(float)curTimeInSeconds;
+- (void)timerSet;
 
 @end
 
 @implementation ClockView
 @synthesize delegate;
+@synthesize startDate, endDate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -56,9 +61,15 @@
     [self setup];
 }
 
+- (void)dealloc {
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+    [[NSNotificationCenter defaultCenter] cancelAllLocalNotifications];
+}
+
 - (void)setup {
     self.backgroundColor = [UIColor clearColor];
-    
+    mSpeed = 1; //< Ticks per second
+
     if (!mLayerSupport)
     {
         mLayerSupport = [[MPLayerSupport alloc] init];
@@ -84,20 +95,24 @@
         //< Save Ticks
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(appResignActive)
-                                                     name:UIApplicationWillResignActiveNotification
+                                                     name:UIApplicationDidEnterBackgroundNotification
                                                    object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(appBecomeActive)
-                                                     name:UIApplicationDidBecomeActiveNotification
+                                                     name:UIApplicationDidEnterBackgroundNotification
+                                                   object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self
+                                                 selector:@selector(appKilled)
+                                                     name:UIApplicationWillTerminateNotification
                                                    object:nil];
     }
     
-    mTicks = 60*40+25; //<
-    mSpeed = 1; //< Ticks per second
     NSArray *urls = [[NSFileManager defaultManager] URLsForDirectory:NSDocumentDirectory
                                                            inDomains:NSUserDomainMask];
     mTemporaryFilePath = [[[[urls objectAtIndex:0] path]
-                          stringByAppendingPathComponent:kSaveFileName] stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding];
+                          stringByAppendingPathComponent:kSaveFileName]
+                          stringByReplacingPercentEscapesUsingEncoding:
+                          NSUTF8StringEncoding];
     NSString *soundPath = [[NSBundle mainBundle] pathForResource:@"tick" ofType:@"aiff"];
     AudioServicesCreateSystemSoundID((__bridge CFURLRef)[NSURL fileURLWithPath: soundPath], &mSoundID);
     
@@ -106,29 +121,24 @@
                                      &mFinishSoundID);
 }
 
-- (void)appResignActive {
-    NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:
-                          [NSNumber numberWithInt:mTicks], kSaveContentKeyTicks,
-                          [NSDate date], kSaveContentKeyDate, nil];
-    [dict writeToFile:mTemporaryFilePath
-           atomically:YES];
+- (void)timerSet {
     [mCurTimer invalidate];
-//    NSLog(@"Ticks %d", mTicks);
+}
+
+- (void)appResignActive {
+    [mCurTimer invalidate];
 }
 
 - (void)appBecomeActive {
     if (mIsRunning)
     {
-        if ([[NSFileManager defaultManager] fileExistsAtPath:mTemporaryFilePath])
-        {
-            NSDictionary *dict = [NSDictionary dictionaryWithContentsOfFile:mTemporaryFilePath];
-            mTicks = [[dict objectForKey:kSaveContentKeyTicks] intValue];
-            NSDate *date = [dict objectForKey:kSaveContentKeyDate];
-            mTicks = MIN((mTicks + [[NSDate date] timeIntervalSinceDate:date]*mSpeed),
-                         (mCurTime*mSpeed));
-            [self updateCycle];
-        }
+//        [self updateCycle];
     }
+}
+
+- (void)appKilled {
+    NSLog(@"appKilled");
+    [[UIApplication sharedApplication] cancelLocalNotification:mNotification];
 }
 
 + (void)clockTimeInRect:(CGRect)rect
@@ -137,6 +147,7 @@
                 seconds:(int)seconds
           withColorCode:(int)colorCode {
     
+    CGContextSetAllowsAntialiasing(context, YES);
     CGFloat secHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.6;
     CGFloat minHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.4;
 
@@ -164,7 +175,6 @@
                                  withExtendHeight:1
                                         direction:(seconds/(float)kSecondsPerMin*M_PI*2 - M_PI_2)
                                    rotationCenter:ctrPt];
-//        CGContextFillPath(context);
         CGContextStrokePath(context);
     }
 }
@@ -172,6 +182,8 @@
 + (void)clockDetailsInRect:(CGRect)rect inContext:(CGContextRef)context
                 numOfMarks:(int)num_of_marks
              withColorCode:(int)colorCode {
+    CGContextSetAllowsAntialiasing(context, YES);
+    CGContextSetShouldAntialias(context, YES);
     CGFloat markHeight = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/1.414*0.05;
     CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
     UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
@@ -181,38 +193,10 @@
         CGContextBeginPath(context);
         [MPCoreGraphicsUtil addRectangleInContext:context
                                      bottomCenter:CGPointMake(CGRectGetMinX(rect), CGRectGetMidY(rect))
-                                  withBottomWidth:2
+                                  withBottomWidth:3
                                        withHeight:markHeight//(i%2 == 0 ? 2*markHeight : markHeight)
                                  withExtendHeight:0
                                         direction:i/(float)num_of_marks*M_PI*2 - M_PI_2
-                                   rotationCenter:ctrPt];
-        CGContextFillPath(context);
-    }
-}
-
-+ (void)rangeClockTimeInRect:(CGRect)rect
-                   inContext:(CGContextRef)context
-                     seconds:(int)seconds
-               withColorCode:(int)colorCode {
-    
-    float radius = MIN(CGRectGetWidth(rect), CGRectGetHeight(rect))/2;
-    CGFloat secHeight = radius*0.9;
-//    CGFloat minHeight = radius*0.5;
-    
-    float second_rotation = (seconds/(float)kSecondsPerMin*M_PI*2) - M_PI_2;
-    
-    CGPoint ctrPt = CGPointMake(CGRectGetMidX(rect), CGRectGetMidY(rect));
-    {
-        UIColor *markColor = [MPColorUtil colorFromHex:colorCode];
-        [markColor setFill];
-        //< Seconds
-        CGContextBeginPath(context);
-        [MPCoreGraphicsUtil addRectangleInContext:context
-                                     bottomCenter:ctrPt
-                                  withBottomWidth:2
-                                       withHeight:secHeight
-                                 withExtendHeight:0
-                                        direction:second_rotation
                                    rotationCenter:ctrPt];
         CGContextFillPath(context);
     }
@@ -383,82 +367,74 @@
         [[UIApplication sharedApplication] cancelLocalNotification:mNotification];
     }
     mIsRunning = NO;
-   [self setToTime:0 animated:animated speed:1];
+    [mCurTimer invalidate];
+    [self moveHands:0];
 }
 
-- (void)moveHands {
-    float curTimeInSeconds = (float)mTicks/kSecondsPerMin;
+- (void)moveHands:(float)curTimeInSeconds animated:(BOOL)animated {
+
+    curTimeInSeconds /= kSecondsPerMin;
     float curTimeInMins = curTimeInSeconds/kMinutesPerHour;
     
     float min_rotation = curTimeInMins*M_PI*2;
     float sec_rotation = curTimeInSeconds*M_PI*2;
-    
-//    CABasicAnimation *minAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-//    minAnim.fromValue = [NSValue valueWithCATransform3D:mMinHand.transform];
-//    minAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(min_rotation, 0, 0, 1)];
-//    minAnim.removedOnCompletion = YES;
-//    minAnim.duration = 1.0/mSpeed;
-//    [mMinHand addAnimation:minAnim forKey:kAnimationKeyMinuteHand];
 
-//    CABasicAnimation *secAnim = [CABasicAnimation animationWithKeyPath:@"transform"];
-//    secAnim.fromValue = [NSValue valueWithCATransform3D:mSecHand.transform];
-//    secAnim.toValue = [NSValue valueWithCATransform3D:CATransform3DMakeRotation(sec_rotation, 0, 0, 1)];
-//    secAnim.removedOnCompletion = YES;
-//    mSecHand.duration = 1.0/mSpeed;
-//    [mSecHand addAnimation:secAnim forKey:kAnimationKeySecondHand];
-
-    mMinHand.transform = CATransform3DMakeRotation(min_rotation, 0, 0, 1);
-    mSecHand.transform = CATransform3DMakeRotation(sec_rotation, 0, 0, 1);
-}
-
-- (void)updateCycle {
-
-//    float curTimeInSeconds = (float)mTicks/kSecondsPerMin;
-//    float curTimeInMins = curTimeInSeconds/kMinutesPerHour;
-//    
-//    float min_rotation = curTimeInMins*M_PI*2;
-//    float sec_rotation = curTimeInSeconds*M_PI*2;
-//    
-//    mMinHand.transform = CATransform3DMakeRotation(min_rotation, 0, 0, 1);
-//    mSecHand.transform = CATransform3DMakeRotation(sec_rotation, 0, 0, 1);
-
-    [self moveHands];
-
-    if (mTicks < mCurTime*mSpeed)
+    if (!animated)
     {
-        AudioServicesPlaySystemSound (mSoundID);
-        mTicks++;        
-        mIsRunning = YES;
-        mCurTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
-                                         target:self
-                                       selector:@selector(updateCycle)
-                                       userInfo:nil
-                                        repeats:NO];
+        mMinHand.transform = CATransform3DMakeRotation(min_rotation, 0, 0, 1);
+        mSecHand.transform = CATransform3DMakeRotation(sec_rotation, 0, 0, 1);
+        
+        [mMinHand setNeedsDisplay];
+        [mSecHand setNeedsDisplay];
     }
     else
     {
-        if (mIsRunning)
+        CATransform3D curMinHandTrans = mMinHand.transform;
+        CATransform3D curSecHandTrans = mSecHand.transform;
         {
-//            NSLog(@"presentLocalNotificationNow");
-            AudioServicesPlaySystemSound (mFinishSoundID);
-            [[UIApplication sharedApplication] presentLocalNotificationNow:mNotification];
-            [self.delegate scheduledTimeFinished:self];
-        }
-        mTicks = 0;
-        mIsRunning = NO;
+            CAAnimation *anim = [CABasicAnimation animationWithKeyPath:@"transform"];
+            
+        }        
     }
 }
 
-- (void)setToTime:(int)timeInSeconds animated:(BOOL)animated speed:(int)speed {
-    mCurTime = timeInSeconds;
-    mTicks = 0;
+- (void)updateCycle {
+    
+    NSDate *curDate = [NSDate date];
+
+    [self moveHands:(int)(MIN(mClockTime,[curDate timeIntervalSinceDate:self.startDate]))];
+
+    if (mIsRunning)
+    {
+        if (([curDate compare:self.endDate] == NSOrderedAscending)
+            || ([curDate compare:self.endDate] == NSOrderedSame))
+        {
+            AudioServicesPlaySystemSound (mSoundID);
+            mCurTimer = [NSTimer scheduledTimerWithTimeInterval:1.0/mSpeed
+                                             target:self
+                                           selector:@selector(updateCycle)
+                                           userInfo:nil
+                                            repeats:NO];
+        }
+        else
+        {
+            AudioServicesPlaySystemSound (mFinishSoundID);
+            [[UIApplication sharedApplication] presentLocalNotificationNow:mNotification];
+            [self.delegate scheduledTimeFinished:self];
+            mIsRunning = NO;
+        }
+    }
+}
+
+- (void)setToTime:(int)timeInSeconds animated:(BOOL)animated speed:(float)speed {
     mSpeed = speed;
+    mIsRunning = YES;
     [self updateCycle];
 }
 
 - (void)tickToTime:(int)timeInSeconds {
     [self flashRed];
-    [self setToTime:0 animated:YES speed:1];
+    [self resetWithAnimation:YES];
     int64_t delayInSeconds = 1.0;
     dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
     dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
@@ -476,8 +452,10 @@
         }
         //< Prepare a Notification
         [[UIApplication sharedApplication] scheduleLocalNotification:mNotification];
+        self.startDate = [NSDate date];
+        self.endDate = [NSDate dateWithTimeInterval:timeInSeconds sinceDate:self.startDate];
+        mClockTime = timeInSeconds;
         [self setToTime:timeInSeconds animated:YES speed:1];
-        
     });
 }
 
@@ -495,28 +473,6 @@
                   minutes:floor(timeInSeconds/(float)kSecondsPerMin)
                   seconds:timeInSeconds%kSecondsPerMin
                  withColorCode:colorCode];
-    
-    image = UIGraphicsGetImageFromCurrentImageContext();
-    
-    UIGraphicsEndImageContext();
-    
-    return image;
-}
-
-+ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode {
-    
-    UIImage *image = nil;
-    
-    UIGraphicsBeginImageContext(size);
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect rect = CGRectMake(0, 0, size.width, size.height);
-    [ClockView rangeClockTimeInRect:rect
-                     inContext:context
-                  seconds:timeInSeconds%kSecondsPerMin
-                      withColorCode:colorCode];
-    [ClockView clockDetailsInRect:rect inContext:context
-                       numOfMarks:12
-                    withColorCode:colorCode];
     
     image = UIGraphicsGetImageFromCurrentImageContext();
     

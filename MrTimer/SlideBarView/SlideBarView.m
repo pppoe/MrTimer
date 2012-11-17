@@ -40,7 +40,7 @@
 }
 
 - (void)setup {
-    self.showRightHandler = YES;
+    self.showRightHandler = NO;
     self.leftPadding = 0;
     self.rightPadding = 0;
     self.backgroundColor = [MPColorUtil colorFromHex:0xFF403E3F];
@@ -106,6 +106,10 @@
     
     CGFloat x_padding_l = MAX(self.leftPadding, 0);
     CGFloat x_padding_r = MAX(self.rightPadding, 0);
+    if (self.showRightHandler)
+    {
+        x_padding_r = 40;
+    }
     CGFloat inner_x_padding = 10;
     CGFloat inner_y_padding = 10;
     CGFloat cornerRadius = 5;

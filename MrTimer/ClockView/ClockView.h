@@ -25,17 +25,20 @@
     CALayer *mSecHand;
     CALayer *mDial;
     CALayer *mShadow;
-    
-    int mCurTime;
     CGRect mClockRect;
     
-    int mTicks;
-    int mSpeed;
-    
-    UILocalNotification *mNotification;
+    float mSpeed;
+
     BOOL mIsRunning;
+    
     NSTimer *mCurTimer;
     NSString *mTemporaryFilePath;
+    UILocalNotification *mNotification;
+    
+    NSData *mStartDate;
+    NSData *mEndDate;
+    NSTimeInterval mClockTime;
+    
     UInt32 mSoundID;
     UInt32 mFinishSoundID;
 }
@@ -48,12 +51,6 @@
 - (void)tickToTime:(int)timeInSeconds;
 
 + (UIImage *)imageOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode;
-+ (UIImage *)imageRangeOfTime:(int)timeInSeconds withSize:(CGSize)size withColor:(int)colorCode;
-
-+ (void)rangeClockTimeInRect:(CGRect)rect
-                   inContext:(CGContextRef)context
-                     seconds:(int)seconds
-               withColorCode:(int)colorCode;
 
 + (void)clockTimeInRect:(CGRect)rect
               inContext:(CGContextRef)context

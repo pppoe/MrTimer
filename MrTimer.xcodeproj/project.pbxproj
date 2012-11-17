@@ -437,10 +437,14 @@
 		47C5D995163791E400F419F7 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Haoxiang  Li (TRL6TEZ75X)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MrTimer/MrTimer-Prefix.pch";
 				INFOPLIST_FILE = "MrTimer/MrTimer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "2A117BBB-15DF-40E5-ADFF-51E9E4C0B3CA";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -448,10 +452,14 @@
 		47C5D996163791E400F419F7 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Haoxiang  Li";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Haoxiang  Li (TRL6TEZ75X)";
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "MrTimer/MrTimer-Prefix.pch";
 				INFOPLIST_FILE = "MrTimer/MrTimer-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "9FCE6350-88CD-477D-ABA7-52721927DA42";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "BD5EB806-7CAE-42F1-B06B-428053981A1C";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;
